@@ -1,7 +1,7 @@
+#include "dbg.h"
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdarg.h>
-#include "dbg.h"
 
 #define MAX_DATA 100
 
@@ -14,10 +14,11 @@ int read_string(char **out_string, int max_buffer) {
 
   return 0;
 
-  error:
-    if (*out_string) free(*out_string);
-    *out_string = NULL;
-    return -1;
+error:
+  if (*out_string)
+    free(*out_string);
+  *out_string = NULL;
+  return -1;
 }
 
 int read_int(int *out_int) {
@@ -30,8 +31,9 @@ int read_int(int *out_int) {
   free(input);
   return 0;
 error:
-    if (input) free(input);
-    return -1;
+  if (input)
+    free(input);
+  return -1;
 }
 
 int read_scan(const char *fmt, ...) {
@@ -49,29 +51,28 @@ int read_scan(const char *fmt, ...) {
     if (fmt[i] == '%') {
       i++;
       switch (fmt[i]) {
-        case '\0':
-            sentinel("Invalid format, you ended with %%");
-            break;
-        case 's':
-            max_buffer = va_arg(argp, int);
-            out_string = va_arg(argp, char **);
-            rc = read_string(out_string, max_buffer);
-            check(rc == 0, "Failed to read string");
-            break;
-        case 'd':
-            out_int = va_arg(argp, int *);
-            rc = read_int(out_int);
-            check(rc == 0, "Failed to read int");
-            break;
-				case 'c':
-						out_char = va_arg(argp, char *);
-						*out_char = fgetc(stdin);
-						break;
-        default:
-            sentinel("Invalid format");
+      case '\0':
+        sentinel("Invalid format, you ended with %%");
+        break;
+      case 's':
+        max_buffer = va_arg(argp, int);
+        out_string = va_arg(argp, char **);
+        rc = read_string(out_string, max_buffer);
+        check(rc == 0, "Failed to read string");
+        break;
+      case 'd':
+        out_int = va_arg(argp, int *);
+        rc = read_int(out_int);
+        check(rc == 0, "Failed to read int");
+        break;
+      case 'c':
+        out_char = va_arg(argp, char *);
+        *out_char = fgetc(stdin);
+        break;
+      default:
+        sentinel("Invalid format");
       }
-    }
-    else {
+    } else {
       fgetc(stdin);
     }
     check(!feof(stdin) && !ferror(stdin), "Input error.");
@@ -80,8 +81,8 @@ int read_scan(const char *fmt, ...) {
 
   return 0;
 
-  error:
-    va_end(argp);
+error:
+  va_end(argp);
   return -1;
 }
 
@@ -94,27 +95,27 @@ int main(int argc, char *argv[]) {
   printf("What's your first name? ");
   int rc = read_scan("%s", MAX_DATA, &first_name);
   check(rc == 0, "Failed first name");
- 
-	printf("What's your initial? ");
-	rc = read_scan("%c\n", &initial);
-	check(rc == 0, "Failed initial");
 
-	printf("What's your last name? ");
-	rc = read_scan("%s", MAX_DATA, &last_name);
-	check(rc == 0, "Failed last name");
+  printf("What's your initial? ");
+  rc = read_scan("%c\n", &initial);
+  check(rc == 0, "Failed initial");
+
+  printf("What's your last name? ");
+  rc = read_scan("%s", MAX_DATA, &last_name);
+  check(rc == 0, "Failed last name");
 
   printf("How old are you? ");
   rc = read_scan("%d", &age);
 
   printf("========= RESULTS ===========\n");
   printf("Fist name: %s", first_name);
-	printf("Initial: '%c'\n", initial);
-	printf("Last name: %s", last_name);
+  printf("Initial: '%c'\n", initial);
+  printf("Last name: %s", last_name);
   printf("Your age: %d\n", age);
 
-	free(first_name);
-	free(last_name);
+  free(first_name);
+  free(last_name);
   return 0;
-  error:
-    return -1;
+error:
+  return -1;
 }

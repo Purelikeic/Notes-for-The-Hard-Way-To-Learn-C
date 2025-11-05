@@ -1,17 +1,17 @@
-#include <stdio.h>
 #include "dbg.h"
+#include <stdio.h>
 
 #define MAX_DATA 100
 
 typedef enum Eyecolor {
-  BLUE_EYES, GREEN_EYES, BROWN_EYES,
-  BLACK_EYES, OTHER_EYES
+  BLUE_EYES,
+  GREEN_EYES,
+  BROWN_EYES,
+  BLACK_EYES,
+  OTHER_EYES
 } Eyecolor;
 
-const char *EYE_COLOR_NAMES[] = {
-  "Blue", "Green", "Brown",
-  "Black", "Other"
-};
+const char *EYE_COLOR_NAMES[] = {"Blue", "Green", "Brown", "Black", "Other"};
 
 typedef struct Person {
   int age;
@@ -22,15 +22,15 @@ typedef struct Person {
 } Person;
 
 int main(int argc, char *argv[]) {
-  Person you = { .age = 0 };
+  Person you = {.age = 0};
   char *in = NULL;
 
   printf("What is your name? ");
-  in = fgets(you.first_name, MAX_DATA-1, stdin);
+  in = fgets(you.first_name, MAX_DATA - 1, stdin);
   check(in != NULL, "Failed to read the first name");
 
   printf("What's your Last name? ");
-  in = fgets(you.last_name, MAX_DATA-1, stdin);
+  in = fgets(you.last_name, MAX_DATA - 1, stdin);
   check(in != NULL, "Failed to read the last name");
 
   printf("How old are you? ");
@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) {
 
   printf("What color are your eyes:\n");
   for (int i = 0; i <= OTHER_EYES; i++) {
-    printf("%d) %s\n", i+1, EYE_COLOR_NAMES[i]);
+    printf("%d) %s\n", i + 1, EYE_COLOR_NAMES[i]);
   }
   printf("> ");
 
@@ -48,7 +48,8 @@ int main(int argc, char *argv[]) {
   check(rc > 0, "You have to enter a number");
 
   you.eyes = eyes - 1;
-  check(you.eyes <= OTHER_EYES && you.eyes >= 0, "Do it right, that's not an option");
+  check(you.eyes <= OTHER_EYES && you.eyes >= 0,
+        "Do it right, that's not an option");
 
   printf("How much do you make an hour? ");
   rc = fscanf(stdin, "%f", &you.income);
@@ -64,6 +65,6 @@ int main(int argc, char *argv[]) {
 
   return 0;
 
-  error:
-    return -1;
+error:
+  return -1;
 }

@@ -1,5 +1,5 @@
-#include "ex22.h"
 #include "dbg.h"
+#include "ex22.h"
 
 const char *MY_NAME = "zzj";
 
@@ -10,7 +10,7 @@ void scope_demo(int count) {
   log_info("Count is: %d", count);
 
   if (count > 10) {
-    int count = 100;  // Bad! Bugs!
+    int count = 100; // Bad! Bugs!
 
     log_info("Count in this scope is %d", count);
   }
@@ -25,7 +25,7 @@ void scope_demo(int count) {
 int main(int argc, char *argv[]) {
   // test out THE_AGE accessorss
   log_info("My name: %s age: %d", MY_NAME, get_age());
-  
+
   set_age(100);
 
   log_info("My age is now: %d", get_age());

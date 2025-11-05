@@ -1,5 +1,5 @@
-#include "../../src/lcthw/dbg.h"
 #include "list.h"
+#include "../../src/lcthw/dbg.h"
 
 List *List_create() { return calloc(1, sizeof(List)); }
 
